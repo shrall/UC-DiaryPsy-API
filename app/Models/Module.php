@@ -8,4 +8,16 @@ use Illuminate\Database\Eloquent\Model;
 class Module extends Model
 {
     use HasFactory;
+    protected $fillable = [
+        'name',
+        'status',
+        'order',
+        'path',
+        'color_hex',
+    ];
+
+    public function users()
+    {
+        return $this->hasMany(UserModule::class, 'business_id', 'id');
+    }
 }

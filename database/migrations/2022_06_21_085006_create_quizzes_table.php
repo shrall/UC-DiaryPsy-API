@@ -18,7 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('status')->default(1);
             $table->integer('order');
-            $table->text('path');
+            $table->text('path')->nullable();
             $table->timestamps();
         });
     }

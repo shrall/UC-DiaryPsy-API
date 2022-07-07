@@ -17,7 +17,7 @@ return new class extends Migration
             $table->id();
             $table->string('question');
             $table->integer('order');
-            $table->text('path');
+            $table->text('path')->nullable();
             $table->timestamps();
         });
     }
