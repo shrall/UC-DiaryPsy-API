@@ -85,6 +85,7 @@ Route::group(['prefix' => 'admin'], function () {
     Route::apiResource('usermodule', AdminUserModuleController::class);
     Route::apiResource('userquestion', AdminUserQuestionController::class);
     Route::apiResource('userquiz', AdminUserQuizController::class);
+    Route::post('/module/reorder', [AdminModuleController::class, 'reorder']);
 });
 
 Route::group(['prefix' => 'user'], function () {

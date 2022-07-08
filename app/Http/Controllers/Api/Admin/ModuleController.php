@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
 use App\Models\Module;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,14 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        $modules = Module::all()->sortBy('order')->toArray();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $modules
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +34,19 @@ class ModuleController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $module = Module::create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'order' => Module::all()->count() + 1,
+            'color_hex' => $request->color_hex,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $module
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +69,18 @@ class ModuleController extends Controller
      */
     public function update(Request $request, Module $module)
     {
-        //
+        $module->update([
+            'name' => $request->name,
+            'status' => $request->status,
+            'color_hex' => $request->color_hex,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $module
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +91,31 @@ class ModuleController extends Controller
      */
     public function destroy(Module $module)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $module
+        ];
+        $module->delete();
+        return SuccessResource::make($return);
+    }
+
+    public function reorder(Request $request)
+    {
+        foreach ($request->modules as $key => $module) {
+            $modul = Module::find($module['id']);
+            $modul->update([
+                'order' => $key + 1
+            ]);
+        }
+
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $request->modules
+        ];
+        return SuccessResource::make($return);
     }
 }

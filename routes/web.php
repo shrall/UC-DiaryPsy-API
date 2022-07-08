@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
@@ -36,7 +37,7 @@ Route::get('/', function () {
 
 Route::resource('user', UserController::class);
 Route::resource('character', CharacterController::class);
-Route::resource('institute', instituteController::class);
+Route::resource('institute', InstituteController::class);
 Route::resource('module', ModuleController::class);
 Route::resource('question', QuestionController::class);
 Route::resource('questiontype', QuestionTypeController::class);
