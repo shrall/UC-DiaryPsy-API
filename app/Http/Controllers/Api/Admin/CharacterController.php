@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CharacterResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Character;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,14 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        //
+        $characters = Character::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $characters
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +35,19 @@ class CharacterController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $character = Character::create([
+            'name' => $request->name,
+            'status' => $request->status,
+            'order' => Character::where('module_id', $request->module_id)->get()->count() + 1,
+            'module_id' => $request->module_id
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $character
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -37,7 +58,13 @@ class CharacterController extends Controller
      */
     public function show(Character $character)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => CharacterResource::make($character)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +76,17 @@ class CharacterController extends Controller
      */
     public function update(Request $request, Character $character)
     {
-        //
+        $character->update([
+            'name' => $request->name,
+            'status' => $request->status,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $character
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +97,31 @@ class CharacterController extends Controller
      */
     public function destroy(Character $character)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $character
+        ];
+        $character->delete();
+        return SuccessResource::make($return);
+    }
+
+    public function reorder(Request $request)
+    {
+        foreach ($request->characters as $key => $character) {
+            $char = Character::find($character['id']);
+            $char->update([
+                'order' => $key + 1
+            ]);
+        }
+
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $request->chracters
+        ];
+        return SuccessResource::make($return);
     }
 }
