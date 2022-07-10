@@ -120,7 +120,7 @@ class CharacterController extends Controller
             'api_code' => 200,
             'api_status' => true,
             'api_message' => 'Sukses',
-            'api_results' => $request->chracters
+            'api_results' => $request->characters
         ];
         return SuccessResource::make($return);
     }
