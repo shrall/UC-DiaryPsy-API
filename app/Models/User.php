@@ -76,10 +76,10 @@ class User extends Authenticatable
     }
     public function questions()
     {
-        return $this->hasMany(Question::class, 'user_id', 'id');
+        return $this->hasMany(UserQuestion::class, 'user_id', 'id');
     }
     public function quizzes()
     {
-        return $this->hasMany(Quiz::class, 'user_id', 'id');
+        return $this->hasMany(UserQuiz::class, 'user_id', 'id');
     }
 }

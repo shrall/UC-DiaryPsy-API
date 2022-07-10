@@ -18,6 +18,10 @@ class Module extends Model
 
     public function users()
     {
-        return $this->hasMany(UserModule::class, 'business_id', 'id');
+        return $this->hasMany(UserModule::class, 'module_id', 'id');
+    }
+    public function characters()
+    {
+        return $this->hasMany(Character::class, 'module_id', 'id');
     }
 }

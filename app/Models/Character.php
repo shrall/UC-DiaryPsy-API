@@ -12,11 +12,16 @@ class Character extends Model
         'name',
         'status',
         'order',
-        'path'
+        'path',
+        'module_id'
     ];
 
-    public function users()
+    public function module()
     {
-        return $this->hasMany(User::class, 'institute_id', 'id');
+        return $this->belongsTo(Module::class, 'module_id', 'id');
+    }
+    public function quizzes()
+    {
+        return $this->hasMany(Quiz::class, 'character_id', 'id');
     }
 }
