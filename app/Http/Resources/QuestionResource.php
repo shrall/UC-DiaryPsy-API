@@ -4,7 +4,7 @@ namespace App\Http\Resources;
 
 use Illuminate\Http\Resources\Json\JsonResource;
 
-class QuizResource extends JsonResource
+class QuestionResource extends JsonResource
 {
     /**
      * Transform the resource into an array.
@@ -16,11 +16,11 @@ class QuizResource extends JsonResource
     {
         return [
             "id" => $this->id,
-            "name" => $this->name,
-            "status" => $this->status,
+            "question" => $this->question,
             "order" => $this->order,
             "path" => $this->path,
-            "questions" => $this->questions
+            "quiz_id" => $this->quiz_id,
+            "questiontype_id" => $this->questiontype_id
         ];
     }
 }

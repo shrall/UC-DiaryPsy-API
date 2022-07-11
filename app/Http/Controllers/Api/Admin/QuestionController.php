@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\QuestionResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Question;
 use Illuminate\Http\Request;
 
@@ -15,7 +17,14 @@ class QuestionController extends Controller
      */
     public function index()
     {
-        //
+        $questions = Question::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $questions
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +35,19 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $question = Question::create([
+            'question' => $request->question,
+            'order' => Question::where('quiz_id', $request->quiz_id)->get()->count() + 1,
+            'quiz_id' => $request->quiz_id,
+            'questiontype_id' => $request->questiontype_id
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $question
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -37,7 +58,13 @@ class QuestionController extends Controller
      */
     public function show(Question $question)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => QuestionResource::make($question)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +76,17 @@ class QuestionController extends Controller
      */
     public function update(Request $request, Question $question)
     {
-        //
+        $question->update([
+            'question' => $request->question,
+            'questiontype_id' => $request->questiontype_id,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $question
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +97,31 @@ class QuestionController extends Controller
      */
     public function destroy(Question $question)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $question
+        ];
+        $question->delete();
+        return SuccessResource::make($return);
+    }
+
+    public function reorder(Request $request)
+    {
+        foreach ($request->questions as $key => $question) {
+            $quest = Question::find($question['id']);
+            $quest->update([
+                'order' => $key + 1
+            ]);
+        }
+
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $request->questions
+        ];
+        return SuccessResource::make($return);
     }
 }
