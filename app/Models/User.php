@@ -27,6 +27,7 @@ class User extends Authenticatable
         'year_born',
         'institute_id',
         'religion_id',
+        'education_id',
         'tribe_id',
         'city_id',
         'role_id'
@@ -66,13 +67,17 @@ class User extends Authenticatable
     {
         return $this->belongsTo(Tribe::class, 'tribe_id', 'id');
     }
+    public function education()
+    {
+        return $this->belongsTo(Education::class, 'education_id', 'id');
+    }
     public function role()
     {
         return $this->belongsTo(Role::class, 'role_id', 'id');
     }
     public function modules()
     {
-        return $this->hasMany(Module::class, 'user_id', 'id');
+        return $this->hasMany(UserModule::class, 'user_id', 'id');
     }
     public function questions()
     {

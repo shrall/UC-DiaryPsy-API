@@ -23,6 +23,7 @@ class DatabaseSeeder extends Seeder
         $this->call(ModuleSeeder::class);
         $this->call(ReligionSeeder::class);
         $this->call(InstituteSeeder::class);
+        $this->call(EducationSeeder::class);
         $this->call(RoleSeeder::class);
         $this->call(UserSeeder::class);
         $this->call(UserModuleSeeder::class);

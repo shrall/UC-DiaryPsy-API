@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\Api\Admin\CharacterController as AdminCharacterController;
+use App\Http\Controllers\Api\Admin\EducationController as AdminEducationController;
 use App\Http\Controllers\Api\Admin\InstituteController as AdminInstituteController;
 use App\Http\Controllers\Api\Admin\ModuleController as AdminModuleController;
 use App\Http\Controllers\Api\Admin\QuestionController as AdminQuestionController;
@@ -14,6 +15,7 @@ use App\Http\Controllers\Api\Admin\UserModuleController as AdminUserModuleContro
 use App\Http\Controllers\Api\Admin\UserQuestionController as AdminUserQuestionController;
 use App\Http\Controllers\Api\Admin\UserQuizController as AdminUserQuizController;
 use App\Http\Controllers\Api\User\CharacterController as UserCharacterController;
+use App\Http\Controllers\Api\User\EducationController as UserEducationController;
 use App\Http\Controllers\Api\User\InstituteController as UserInstituteController;
 use App\Http\Controllers\Api\User\ModuleController as ApiUserModuleController;
 use App\Http\Controllers\Api\User\QuestionController as ApiUserQuestionController;
@@ -27,6 +29,7 @@ use App\Http\Controllers\Api\User\UserModuleController as UserUserModuleControll
 use App\Http\Controllers\Api\User\UserQuestionController as UserUserQuestionController;
 use App\Http\Controllers\Api\User\UserQuizController as UserUserQuizController;
 use App\Http\Controllers\CharacterController;
+use App\Http\Controllers\EducationController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\ModuleController;
 use App\Http\Controllers\QuestionController;
@@ -70,10 +73,12 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::apiResource('usermodule', UserModuleController::class);
 // Route::apiResource('userquestion', UserQuestionController::class);
 // Route::apiResource('userquiz', UserQuizController::class);
+// Route::apiResource('education', EducationController::class);
 
 Route::group(['prefix' => 'admin'], function () {
     Route::apiResource('character', AdminCharacterController::class);
     Route::apiResource('institute', AdminInstituteController::class);
+    Route::apiResource('education', AdminEducationController::class);
     Route::apiResource('module', AdminModuleController::class);
     Route::apiResource('question', AdminQuestionController::class);
     Route::apiResource('questiontype', AdminQuestionTypeController::class);
@@ -94,6 +99,7 @@ Route::group(['prefix' => 'admin'], function () {
 Route::group(['prefix' => 'user'], function () {
     Route::apiResource('character', UserCharacterController::class);
     Route::apiResource('institute', UserInstituteController::class);
+    Route::apiResource('education', UserEducationController::class);
     Route::apiResource('module', ApiUserModuleController::class);
     Route::apiResource('question', ApiUserQuestionController::class);
     Route::apiResource('questiontype', UserQuestionTypeController::class);
