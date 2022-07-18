@@ -21,7 +21,7 @@ class ModuleResource extends JsonResource
             "order" => $this->order,
             "path" => $this->path,
             "color_hex" => $this->color_hex,
-            "characters" => $this->characters
+            "characters" => $this->characters->sortBy('order')->toArray()
         ];
     }
 }

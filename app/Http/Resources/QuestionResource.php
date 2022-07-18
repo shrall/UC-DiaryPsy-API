@@ -20,7 +20,8 @@ class QuestionResource extends JsonResource
             "order" => $this->order,
             "path" => $this->path,
             "quiz_id" => $this->quiz_id,
-            "questiontype_id" => $this->questiontype_id
+            "questiontype_id" => $this->questiontype_id,
+            "questiontype" => $this->questiontype
         ];
     }
 }
