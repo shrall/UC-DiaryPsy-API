@@ -5,6 +5,7 @@ namespace App\Http\Controllers\Api\Admin;
 use App\Http\Controllers\Controller;
 use App\Http\Resources\QuizResource;
 use App\Http\Resources\SuccessResource;
+use App\Models\Question;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -41,6 +42,19 @@ class QuizController extends Controller
             'order' => Quiz::where('character_id', $request->character_id)->get()->count() + 1,
             'character_id' => $request->character_id
         ]);
+
+        $question1 = Question::create([
+            'order' => 2,
+            'quiz_id' => $quiz->id,
+            'questiontype_id' => 2
+        ]);
+
+        $question2 = Question::create([
+            'order' => 3,
+            'quiz_id' => $quiz->id,
+            'questiontype_id' => 3
+        ]);
+
         $return = [
             'api_code' => 200,
             'api_status' => true,

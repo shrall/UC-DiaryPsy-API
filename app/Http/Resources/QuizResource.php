@@ -20,7 +20,7 @@ class QuizResource extends JsonResource
             "status" => $this->status,
             "order" => $this->order,
             "path" => $this->path,
-            "questions" => QuestionResource::collection($this->questions->sortBy('order'))
+            "questions" => QuestionResource::collection($this->questions->where('questiontype_id', 1)->sortBy('order'))
         ];
     }
 }
