@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\UserModuleController as AdminUserModuleController;
 use App\Http\Controllers\Api\Admin\UserQuestionController as AdminUserQuestionController;
 use App\Http\Controllers\Api\Admin\UserQuizController as AdminUserQuizController;
+use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\User\CharacterController as UserCharacterController;
 use App\Http\Controllers\Api\User\EducationController as UserEducationController;
 use App\Http\Controllers\Api\User\InstituteController as UserInstituteController;
@@ -94,6 +95,13 @@ Route::group(['prefix' => 'admin'], function () {
     Route::post('/character/reorder', [AdminCharacterController::class, 'reorder']);
     Route::post('/quiz/reorder', [AdminQuizController::class, 'reorder']);
     Route::post('/question/reorder', [AdminQuestionController::class, 'reorder']);
+});
+
+Route::group(['prefix' => 'location'], function () {
+    Route::get('/province', [LocationController::class, 'province']);
+    Route::get('/city', [LocationController::class, 'city']);
+    Route::get('/district', [LocationController::class, 'district']);
+    Route::get('/village', [LocationController::class, 'village']);
 });
 
 Route::group(['prefix' => 'user'], function () {
