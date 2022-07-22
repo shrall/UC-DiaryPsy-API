@@ -9,6 +9,9 @@ class UserQuestion extends Model
 {
     use HasFactory;
     protected $fillable = [
+        'choice',
+        'answer',
+        'open_question',
         'status',
         'user_id',
         'question_id'
