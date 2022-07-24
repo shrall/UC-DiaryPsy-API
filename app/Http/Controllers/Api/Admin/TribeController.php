@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
 use App\Models\Tribe;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,14 @@ class TribeController extends Controller
      */
     public function index()
     {
-        //
+        $tribes = Tribe::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $tribes
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +34,16 @@ class TribeController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $tribe = Tribe::create([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $tribe
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -37,7 +54,13 @@ class TribeController extends Controller
      */
     public function show(Tribe $tribe)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $tribe
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +72,16 @@ class TribeController extends Controller
      */
     public function update(Request $request, Tribe $tribe)
     {
-        //
+        $tribe->update([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $tribe
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +92,13 @@ class TribeController extends Controller
      */
     public function destroy(Tribe $tribe)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $tribe
+        ];
+        $tribe->delete();
+        return SuccessResource::make($return);
     }
 }
