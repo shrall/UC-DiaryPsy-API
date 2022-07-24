@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
 use App\Models\Institute;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,14 @@ class InstituteController extends Controller
      */
     public function index()
     {
-        //
+        $institutes = Institute::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $institutes
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +34,16 @@ class InstituteController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $institute = Institute::create([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $institute
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -37,7 +54,13 @@ class InstituteController extends Controller
      */
     public function show(Institute $institute)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $institute
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +72,16 @@ class InstituteController extends Controller
      */
     public function update(Request $request, Institute $institute)
     {
-        //
+        $institute->update([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $institute
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +92,13 @@ class InstituteController extends Controller
      */
     public function destroy(Institute $institute)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $institute
+        ];
+        $institute->delete();
+        return SuccessResource::make($return);
     }
 }
