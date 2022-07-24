@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
 use App\Models\Education;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,14 @@ class EducationController extends Controller
      */
     public function index()
     {
-        //
+        $educations = Education::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $educations
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -26,7 +34,16 @@ class EducationController extends Controller
      */
     public function store(Request $request)
     {
-        //
+        $education = Education::create([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $education
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -37,7 +54,13 @@ class EducationController extends Controller
      */
     public function show(Education $education)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $education
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +72,16 @@ class EducationController extends Controller
      */
     public function update(Request $request, Education $education)
     {
-        //
+        $education->update([
+            'name' => $request->name,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $education
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -60,6 +92,13 @@ class EducationController extends Controller
      */
     public function destroy(Education $education)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses Terhapus.',
+            'api_results' => $education
+        ];
+        $education->delete();
+        return SuccessResource::make($return);
     }
 }
