@@ -3,6 +3,7 @@
 namespace Database\Seeders;
 
 use App\Models\User;
+use Carbon\Carbon;
 use Illuminate\Database\Console\Seeds\WithoutModelEvents;
 use Illuminate\Database\Seeder;
 use Illuminate\Support\Facades\Hash;
@@ -19,6 +20,7 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->name = "Marcel";
         $user->email = "user@gmail.com";
+        $user->email_verified_at = Carbon::now();
         $user->password = Hash::make('wars1234');
         $user->year_born = 2000;
         $user->phone = "08123123123";
@@ -33,6 +35,7 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->name = "Super Admin";
         $user->email = "superadmin@gmail.com";
+        $user->email_verified_at = Carbon::now();
         $user->password = Hash::make('wars1234');
         $user->year_born = 2000;
         $user->phone = "08123123123";
@@ -47,6 +50,7 @@ class UserSeeder extends Seeder
         $user = new User();
         $user->name = "Admin";
         $user->email = "admin@gmail.com";
+        $user->email_verified_at = Carbon::now();
         $user->password = Hash::make('wars1234');
         $user->year_born = 2000;
         $user->phone = "08123123123";

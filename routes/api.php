@@ -15,6 +15,7 @@ use App\Http\Controllers\Api\Admin\UserModuleController as AdminUserModuleContro
 use App\Http\Controllers\Api\Admin\UserQuestionController as AdminUserQuestionController;
 use App\Http\Controllers\Api\Admin\UserQuizController as AdminUserQuizController;
 use App\Http\Controllers\Api\Auth\LoginController;
+use App\Http\Controllers\Api\Auth\RegisterController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\User\CharacterController as UserCharacterController;
 use App\Http\Controllers\Api\User\EducationController as UserEducationController;
@@ -60,6 +61,8 @@ use Illuminate\Support\Facades\Route;
 
 Route::post('/login', [LoginController::class, 'login']);
 Route::post('/forgot-password', [LoginController::class, 'forgot_password']);
+Route::post('/register', [RegisterController::class, 'register']);
+Route::post('/email/verify', [RegisterController::class, 'resend_email']);
 
 Route::group(['middleware' => 'auth:api', 'as' => 'api.user.'], function () {
     Route::post('/logout', [LoginController::class, 'logout']);
