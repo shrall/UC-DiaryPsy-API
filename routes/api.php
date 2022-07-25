@@ -14,6 +14,7 @@ use App\Http\Controllers\Api\Admin\UserController as AdminUserController;
 use App\Http\Controllers\Api\Admin\UserModuleController as AdminUserModuleController;
 use App\Http\Controllers\Api\Admin\UserQuestionController as AdminUserQuestionController;
 use App\Http\Controllers\Api\Admin\UserQuizController as AdminUserQuizController;
+use App\Http\Controllers\Api\Auth\LoginController;
 use App\Http\Controllers\Api\LocationController;
 use App\Http\Controllers\Api\User\CharacterController as UserCharacterController;
 use App\Http\Controllers\Api\User\EducationController as UserEducationController;
@@ -57,8 +58,11 @@ use Illuminate\Support\Facades\Route;
 |
 */
 
-Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
-    return $request->user();
+Route::post('/login', [LoginController::class, 'login']);
+Route::post('/forgot-password', [LoginController::class, 'forgot_password']);
+
+Route::group(['middleware' => 'auth:api', 'as' => 'api.user.'], function () {
+    Route::post('/logout', [LoginController::class, 'logout']);
 });
 
 // Route::apiResource('character', CharacterController::class);
@@ -76,7 +80,7 @@ Route::middleware('auth:sanctum')->get('/user', function (Request $request) {
 // Route::apiResource('userquiz', UserQuizController::class);
 // Route::apiResource('education', EducationController::class);
 
-Route::group(['prefix' => 'admin'], function () {
+Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function () {
     Route::apiResource('character', AdminCharacterController::class);
     Route::apiResource('institute', AdminInstituteController::class);
     Route::apiResource('education', AdminEducationController::class);
