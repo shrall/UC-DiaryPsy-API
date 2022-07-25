@@ -108,19 +108,21 @@ Route::group(['prefix' => 'location'], function () {
     Route::get('/village', [LocationController::class, 'village']);
 });
 
-Route::group(['prefix' => 'user'], function () {
+Route::group(['middleware' => 'auth:api', 'prefix' => 'user'], function () {
     Route::apiResource('character', UserCharacterController::class);
-    Route::apiResource('institute', UserInstituteController::class);
-    Route::apiResource('education', UserEducationController::class);
     Route::apiResource('module', ApiUserModuleController::class);
     Route::apiResource('question', ApiUserQuestionController::class);
     Route::apiResource('questiontype', UserQuestionTypeController::class);
     Route::apiResource('quiz', ApiUserQuizController::class);
-    Route::apiResource('religion', UserReligionController::class);
     Route::apiResource('role', UserRoleController::class);
-    Route::apiResource('tribe', UserTribeController::class);
     Route::apiResource('user', UserUserController::class);
     Route::apiResource('usermodule', UserUserModuleController::class);
     Route::apiResource('userquestion', UserUserQuestionController::class);
     Route::apiResource('userquiz', UserUserQuizController::class);
+});
+Route::group(['prefix' => 'user'], function () {
+    Route::apiResource('education', UserEducationController::class);
+    Route::apiResource('institute', UserInstituteController::class);
+    Route::apiResource('religion', UserReligionController::class);
+    Route::apiResource('tribe', UserTribeController::class);
 });

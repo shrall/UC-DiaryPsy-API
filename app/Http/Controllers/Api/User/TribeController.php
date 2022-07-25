@@ -3,6 +3,7 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
 use App\Models\Tribe;
 use Illuminate\Http\Request;
 
@@ -15,7 +16,14 @@ class TribeController extends Controller
      */
     public function index()
     {
-        //
+        $tribes = Tribe::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $tribes
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
