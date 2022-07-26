@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\CharacterResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Character;
 use Illuminate\Http\Request;
 
@@ -37,7 +39,13 @@ class CharacterController extends Controller
      */
     public function show(Character $character)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => CharacterResource::make($character)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
