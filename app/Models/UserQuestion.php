@@ -14,7 +14,8 @@ class UserQuestion extends Model
         'open_question',
         'status',
         'user_id',
-        'question_id'
+        'question_id',
+        'quiz_id'
     ];
 
     public function user()

@@ -23,6 +23,8 @@ return new class extends Migration
             $table->foreign('user_id')->references('id')->on('users')->onDelete('cascade');
             $table->unsignedBigInteger('question_id')->index()->nullable();
             $table->foreign('question_id')->references('id')->on('questions')->onDelete('cascade');
+            $table->unsignedBigInteger('quiz_id')->index()->nullable();
+            $table->foreign('quiz_id')->references('id')->on('quizzes')->onDelete('cascade');
             $table->timestamps();
         });
     }

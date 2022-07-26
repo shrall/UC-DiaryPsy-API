@@ -24,4 +24,8 @@ class Question extends Model
     {
         return $this->belongsTo(QuestionType::class, 'questiontype_id', 'id');
     }
+    public function answers()
+    {
+        return $this->hasMany(UserQuestion::class, 'question_id', 'id');
+    }
 }
