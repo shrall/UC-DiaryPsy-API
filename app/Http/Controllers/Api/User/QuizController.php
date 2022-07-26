@@ -3,6 +3,9 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\QuizUserResource;
+use App\Http\Resources\SuccessResource;
+use App\Http\Resources\UserQuizResource;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
 
@@ -37,7 +40,13 @@ class QuizController extends Controller
      */
     public function show(Quiz $quiz)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => QuizUserResource::make($quiz)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -61,5 +70,15 @@ class QuizController extends Controller
     public function destroy(Quiz $quiz)
     {
         //
+    }
+    public function results(Quiz $quiz)
+    {
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => UserQuizResource::make($quiz)
+        ];
+        return SuccessResource::make($return);
     }
 }
