@@ -3,8 +3,11 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\SuccessResource;
+use App\Http\Resources\UserResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -37,7 +40,13 @@ class UserController extends Controller
      */
     public function show(User $user)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => UserResource::make($user)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
@@ -49,7 +58,37 @@ class UserController extends Controller
      */
     public function update(Request $request, User $user)
     {
-        //
+        if ($request->photo) {
+            $photo = 'user-' . time() . '-' . $request['photo']->getClientOriginalName();
+            $request->photo->move(public_path('uploads'), $photo);
+        } else {
+            $photo = $user->photo;
+        }
+        if ($request->password) {
+            $password = Hash::make($request->password);
+        } else {
+            $password = $user->password;
+        }
+        $user->update([
+            'name' => $request->name,
+            'photo' => $photo,
+            'password' => $password,
+            'year_born' => $request->year_born,
+            'phone' => $request->phone,
+            'address' => $request->address,
+            'education_id' => $request->education_id,
+            'institute_id' => $request->institute_id,
+            'religion_id' => $request->religion_id,
+            'tribe_id' => $request->tribe_id,
+            'city_id' => $request->city_id,
+        ]);
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => UserResource::make($user)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**

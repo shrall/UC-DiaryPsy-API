@@ -118,10 +118,12 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'user'], function () {
     Route::apiResource('questiontype', UserQuestionTypeController::class);
     Route::apiResource('quiz', ApiUserQuizController::class);
     Route::apiResource('role', UserRoleController::class);
-    Route::apiResource('user', UserUserController::class);
     Route::apiResource('usermodule', UserUserModuleController::class);
     Route::apiResource('userquestion', UserUserQuestionController::class);
     Route::apiResource('userquiz', UserUserQuizController::class);
+});
+Route::group(['middleware' => 'auth:api'], function () {
+    Route::apiResource('user', UserUserController::class);
 });
 Route::group(['prefix' => 'user'], function () {
     Route::apiResource('education', UserEducationController::class);
