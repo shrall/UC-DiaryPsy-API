@@ -3,6 +3,8 @@
 namespace App\Http\Controllers\Api\User;
 
 use App\Http\Controllers\Controller;
+use App\Http\Resources\ModuleResource;
+use App\Http\Resources\SuccessResource;
 use App\Models\Module;
 use Illuminate\Http\Request;
 
@@ -37,7 +39,13 @@ class ModuleController extends Controller
      */
     public function show(Module $module)
     {
-        //
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => ModuleResource::make($module)
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
