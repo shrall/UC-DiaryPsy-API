@@ -95,6 +95,8 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function () {
     Route::apiResource('role', AdminRoleController::class);
     Route::apiResource('tribe', AdminTribeController::class);
     Route::apiResource('user', AdminUserController::class);
+    Route::post('/user/{user}/module/add', [AdminUserController::class, 'module_add']);
+    Route::post('/user/{user}/module/delete', [AdminUserController::class, 'module_delete']);
     Route::apiResource('usermodule', AdminUserModuleController::class);
     Route::apiResource('userquestion', AdminUserQuestionController::class);
     Route::apiResource('userquiz', AdminUserQuizController::class);
