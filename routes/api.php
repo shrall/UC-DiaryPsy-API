@@ -94,6 +94,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function () {
     Route::apiResource('religion', AdminReligionController::class);
     Route::apiResource('role', AdminRoleController::class);
     Route::apiResource('tribe', AdminTribeController::class);
+    Route::get('/user/export', [AdminUserController::class, 'export']);
     Route::apiResource('user', AdminUserController::class);
     Route::post('/user/{user}/module/add', [AdminUserController::class, 'module_add']);
     Route::post('/user/{user}/module/delete', [AdminUserController::class, 'module_delete']);

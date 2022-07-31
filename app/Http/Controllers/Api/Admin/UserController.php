@@ -4,9 +4,12 @@ namespace App\Http\Controllers\Api\Admin;
 
 use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessResource;
+use App\Http\Resources\UserExportResource;
+use App\Http\Resources\UserQuizExportResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
 use App\Models\UserModule;
+use App\Models\UserQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -25,6 +28,17 @@ class UserController extends Controller
             'api_status' => true,
             'api_message' => 'Sukses',
             'api_results' => $users
+        ];
+        return SuccessResource::make($return);
+    }
+    public function export()
+    {
+        $uqs = UserQuiz::all();
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => UserQuizExportResource::collection($uqs)
         ];
         return SuccessResource::make($return);
     }

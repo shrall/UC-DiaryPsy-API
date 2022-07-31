@@ -7,6 +7,7 @@ use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserQuizResource;
 use App\Models\Quiz;
 use App\Models\UserQuestion;
+use App\Models\UserQuiz;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -31,6 +32,11 @@ class UserQuestionController extends Controller
     public function store(Request $request)
     {
         $quiz = Quiz::find($request->quiz_id);
+        UserQuiz::create([
+            'status' => 1,
+            'user_id' => Auth::id(),
+            'quiz_id' => $request->quiz_id
+        ]);
         foreach ($request->question_id as $key => $value) {
             UserQuestion::create([
                 'choice' => $request->choice[$key],

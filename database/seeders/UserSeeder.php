@@ -28,6 +28,7 @@ class UserSeeder extends Seeder
         $user->institute_id = 1;
         $user->religion_id = 1;
         $user->tribe_id = 1;
+        $user->education_id = 1;
         $user->city_id = 1101;
         $user->role_id = 1;
         $user->save();
@@ -43,6 +44,7 @@ class UserSeeder extends Seeder
         $user->institute_id = 1;
         $user->religion_id = 1;
         $user->tribe_id = 1;
+        $user->education_id = 1;
         $user->city_id = 1101;
         $user->role_id = 2;
         $user->save();
@@ -58,6 +60,7 @@ class UserSeeder extends Seeder
         $user->institute_id = 1;
         $user->religion_id = 1;
         $user->tribe_id = 1;
+        $user->education_id = 1;
         $user->city_id = 1101;
         $user->role_id = 2;
         $user->save();
