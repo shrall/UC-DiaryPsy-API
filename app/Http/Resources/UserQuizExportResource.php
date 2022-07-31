@@ -25,9 +25,9 @@ class UserQuizExportResource extends JsonResource
     public function toArray($request)
     {
         $response = [
-            "ID" => $this->user_id,
+            "ID User" => $this->user_id,
             "Nama" => $this->user->name,
-            "email" => $this->user->email,
+            "E-Mail" => $this->user->email,
             "Tahun Lahir" => $this->user->year_born,
             "Telepon" => $this->user->phone,
             "Alamat" => $this->user->address,
@@ -38,6 +38,7 @@ class UserQuizExportResource extends JsonResource
             "Kota" => $this->user->city->name,
             "Modul" => $this->quiz->character->module->name,
             "Karakter" => $this->quiz->character->name,
+            "Status Karakter" => "Belum Selesai",
             "Quiz" => $this->quiz->name,
         ];
         $questions = "";
@@ -71,6 +72,27 @@ class UserQuizExportResource extends JsonResource
         $response["Total Gagal"] = $this->quiz->questions->count() - 1 - $successes;
         $response["Status Quiz"] = $successes >= ($this->quiz->questions->count() - 1 - $successes) ? "Berhasil" : "Gagal";
         $response["Tanggal"] = $this->created_at;
+
+        $quiz_count = $this->quiz->character->quizzes->count();
+        $quiz_successes = 0;
+        $quiz_answered = 0;
+        foreach ($this->quiz->character->quizzes as $key => $quiz) {
+            $question_successes = 0;
+            foreach ($quiz->questions->sortBy('order') as $key => $question) {
+                $question_successes += $question->answers->where('user_id', $this->user_id)->first()->choice;
+            };
+            if ($question_successes >= $quiz->questions->count() - 1 - $successes) {
+                $quiz_successes += 1;
+            }
+            $quiz_answered += 1;
+        }
+        if ($quiz_count == $quiz_answered) {
+            if ($quiz_successes >= $quiz_count / 2) {
+                $response["Status Karakter"] = "Berhasil";
+            } else {
+                $response["Status Karakter"] = "Gagal";
+            }
+        }
         return $response;
     }
 }
