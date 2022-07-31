@@ -134,4 +134,5 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'user'], function () {
 });
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('user', UserUserController::class);
+    Route::post('/user/{user}/module/add', [UserUserController::class, 'module_add']);
 });

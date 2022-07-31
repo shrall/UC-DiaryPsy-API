@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserResource;
 use App\Models\User;
+use App\Models\UserModule;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Hash;
 
@@ -100,5 +101,29 @@ class UserController extends Controller
     public function destroy(User $user)
     {
         //
+    }
+    public function module_add(Request $request, User $user)
+    {
+        $ums = UserModule::all();
+        $bool = true;
+        foreach ($ums as $key => $usermodule) {
+            if ($usermodule->module_id == $request->module_id) {
+                $bool = false;
+            }
+        }
+        if ($bool) {
+            UserModule::create([
+                'user_id' => $user->id,
+                'module_id' => $request->module_id,
+                'status' => 1
+            ]);
+        }
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => UserResource::make($user)
+        ];
+        return SuccessResource::make($return);
     }
 }
