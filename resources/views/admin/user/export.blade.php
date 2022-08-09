@@ -78,9 +78,6 @@
         @endif
     @endforeach
     <script>
-        Highcharts.setOptions({
-            colors: ['#B72619', '#0284c7']
-        });
         var series = [];
     </script>
     @foreach ($user->modules as $usermodule)
@@ -108,11 +105,8 @@
                         gagal++;
                     }
                     series[@json($keyed)] = [{
-                        name: 'Gagal',
-                        data: [gagal]
-                    }, {
-                        name: 'Sukses',
-                        data: [sukses]
+                        name: 'Jumlah',
+                        data: [sukses, gagal]
                     }]
                 </script>
             @endforeach
@@ -131,17 +125,17 @@
                         text: ''
                     },
                     xAxis: {
-                        visible: false,
+                        // visible: false,
                         labels: {
-                            enabled: false
+                            // enabled: false
                         },
-                        categories: ['Marcel']
+                        categories: ['Berhasil', 'Gagal']
                     },
                     yAxis: {
                         min: 0,
                         max: 10,
                         title: {
-                            text: 'Jumlah Berhasil/Gagal'
+                            text: 'Jumlah'
                         }
                     },
                     legend: {
@@ -153,7 +147,7 @@
                             stacking: 'normal'
                         }
                     },
-                    series: [series[@json($keyed)][0], series[@json($keyed)][1]]
+                    series: series[@json($keyed)],
                 });
             </script>
         @endforeach
