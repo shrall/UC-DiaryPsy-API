@@ -19,6 +19,7 @@ class ModuleResource extends JsonResource
             "name" => $this->name,
             "status" => $this->status,
             "order" => $this->order,
+            "price" => $this->price,
             "path" => $this->path,
             "color_hex" => $this->color_hex,
             "characters" => $this->characters->sortBy('order')->toArray()

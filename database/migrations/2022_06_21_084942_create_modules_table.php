@@ -18,6 +18,7 @@ return new class extends Migration
             $table->string('name');
             $table->integer('status')->default(1);
             $table->integer('order');
+            $table->bigInteger('price')->default(0);
             $table->text('path')->nullable();
             $table->string('color_hex');
             $table->timestamps();

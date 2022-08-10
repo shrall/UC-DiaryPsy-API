@@ -13,6 +13,7 @@ class Module extends Model
         'status',
         'order',
         'path',
+        'price',
         'color_hex',
     ];
 
