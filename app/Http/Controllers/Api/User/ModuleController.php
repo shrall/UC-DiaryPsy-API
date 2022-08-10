@@ -6,7 +6,9 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\ModuleResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Module;
+use App\Models\UserModule;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class ModuleController extends Controller
 {
@@ -17,7 +19,11 @@ class ModuleController extends Controller
      */
     public function index()
     {
-        //
+        $modules = Module::whereDoesntHave('users')
+            ->orWhereHas('users', function ($q) {
+                $q->where('user_id', '!=', Auth::id());
+            })->get();
+        return $modules;
     }
 
     /**
