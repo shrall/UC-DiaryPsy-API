@@ -11,6 +11,11 @@
 </head>
 
 <body>
+    <ul>
+        <li>Nama: {{ $user->name }}</li>
+        <li>E-Mail: {{ $user->email }}</li>
+    </ul>
+    <hr>
     @foreach ($user->modules as $usermodule)
         @php
             $userquestions = 0;
@@ -18,62 +23,83 @@
         @foreach ($usermodule->module->characters as $character)
             @foreach ($character->quizzes as $quiz)
                 @php
-                    $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first()->quiz;
+                    $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first();
                 @endphp
-                @foreach ($the_quiz->questions->sortBy('order') as $key => $question)
-                    @php
-                        $userquestions += $question->answers->where('user_id', $user->id)->count();
-                    @endphp
-                @endforeach
+                @if ($the_quiz)
+                    @foreach ($the_quiz->quiz->questions->sortBy('order') as $key => $question)
+                        @php
+                            $userquestions += $question->answers->where('user_id', $user->id)->count();
+                        @endphp
+                    @endforeach
+                @endif
             @endforeach
         @endforeach
         @if ($userquestions > 0)
-            <div class="text-4xl">Report Modul {{ $usermodule->module->name }}</div>
+            <div class="text-3xl">Report Modul {{ $usermodule->module->name }}</div>
             @foreach ($usermodule->module->characters as $character)
-                <div class="text-2xl">{{ $loop->iteration }}. {{ $character->name }}</div>
-                <div class="w-96 h-20" id="container-{{ $character->id }}"></div>
-                <table class="border border-black">
-                    <tr>
-                        <th class="border border-black">Hari</th>
-                        <th class="border border-black">Pertanyaan</th>
-                        <th class="border border-black">Status</th>
-                        <th class="border border-black">Berhasil</th>
-                        <th class="border border-black">Gagal</th>
-                    </tr>
-                    @foreach ($character->quizzes as $quiz)
+                @php
+                    $answered = false;
+                @endphp
+                @foreach ($character->quizzes as $quiz)
+                    @php
+                        $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first();
+                    @endphp
+                    @if ($the_quiz)
                         @php
-                            $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first()->quiz;
-                            $successes = 0;
+                            $answered = true;
                         @endphp
+                    @endif
+                @endforeach
+                @if ($answered)
+                    <div class="text-2xl">{{ $loop->iteration }}. {{ $character->name }}</div>
+                    <div class="w-96 h-20" id="container-{{ $character->id }}"></div>
+                    <table class="border border-black">
                         <tr>
-                            <td class="border border-black">{{ $loop->iteration }}. {{ $the_quiz->name }}</td>
-                            <td class="border border-black">
-                                @foreach ($the_quiz->questions->sortBy('order') as $key => $question)
-                                    @if ($key == 2)
-                                        {{ $question->question }}
-                                        ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
-                                    @else
-                                        @if ($question->questiontype_id == 2)
-                                            <br>{{ $question->answers->where('user_id', $user->id)->first()->open_question }}
-                                            ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
-                                        @elseif ($question->questiontype_id == 1)
-                                            <br>{{ $question->question }}
-                                            ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
-                                        @endif
-                                    @endif
-                                    @php
-                                        $successes += $question->answers->where('user_id', $user->id)->first()->choice;
-                                    @endphp
-                                @endforeach
-                            </td>
-                            <td class="border border-black">
-                                {{ $successes >= $the_quiz->questions->count() - 1 - $successes ? 'Berhasil' : 'Gagal' }}
-                            </td>
-                            <td class="border border-black">{{ $successes }}</td>
-                            <td class="border border-black">{{ $quiz->questions->count() - 1 - $successes }}</td>
+                            <th class="border border-black">Hari</th>
+                            <th class="border border-black">Pertanyaan</th>
+                            <th class="border border-black">Status</th>
+                            <th class="border border-black">Berhasil</th>
+                            <th class="border border-black">Gagal</th>
                         </tr>
-                    @endforeach
-                </table>
+                        @foreach ($character->quizzes as $quiz)
+                            @php
+                                $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first();
+                                $successes = 0;
+                            @endphp
+                            @if ($the_quiz)
+                                <tr>
+                                    <td class="border border-black">{{ $loop->iteration }}. {{ $the_quiz->quiz->name }}
+                                    </td>
+                                    <td class="border border-black">
+                                        @foreach ($the_quiz->quiz->questions->sortBy('order') as $key => $question)
+                                            @if ($key == 2)
+                                                {{ $question->question }}
+                                                ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
+                                            @else
+                                                @if ($question->questiontype_id == 2)
+                                                    <br>{{ $question->answers->where('user_id', $user->id)->first()->open_question }}
+                                                    ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
+                                                @elseif ($question->questiontype_id == 1)
+                                                    <br>{{ $question->question }}
+                                                    ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
+                                                @endif
+                                            @endif
+                                            @php
+                                                $successes += $question->answers->where('user_id', $user->id)->first()->choice;
+                                            @endphp
+                                        @endforeach
+                                    </td>
+                                    <td class="border border-black">
+                                        {{ $successes >= $the_quiz->quiz->questions->count() - 1 - $successes ? 'Berhasil' : 'Gagal' }}
+                                    </td>
+                                    <td class="border border-black">{{ $successes }}</td>
+                                    <td class="border border-black">{{ $quiz->questions->count() - 1 - $successes }}
+                                    </td>
+                                </tr>
+                            @endif
+                        @endforeach
+                    </table>
+                @endif
             @endforeach
         @endif
     @endforeach
@@ -89,26 +115,28 @@
             </script>
             @foreach ($character->quizzes as $quiz)
                 @php
-                    $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first()->quiz;
+                    $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first();
                     $successes = 0;
                 @endphp
-                @foreach ($the_quiz->questions->sortBy('order') as $key => $question)
-                    @php
-                        //sukses dari question
-                        $successes += $question->answers->where('user_id', $user->id)->first()->choice;
-                    @endphp
-                @endforeach
-                <script>
-                    if (@json($successes >= $the_quiz->questions->count() - 1 - $successes)) {
-                        sukses++;
-                    } else {
-                        gagal++;
-                    }
-                    series[@json($keyed)] = [{
-                        name: 'Jumlah',
-                        data: [sukses, gagal]
-                    }]
-                </script>
+                @if ($the_quiz)
+                    @foreach ($the_quiz->quiz->questions->sortBy('order') as $key => $question)
+                        @php
+                            //sukses dari question
+                            $successes += $question->answers->where('user_id', $user->id)->first()->choice;
+                        @endphp
+                    @endforeach
+                    <script>
+                        if (@json($successes >= $the_quiz->quiz->questions->count() - 1 - $successes)) {
+                            sukses++;
+                        } else {
+                            gagal++;
+                        }
+                        series[@json($keyed)] = [{
+                            name: 'Jumlah',
+                            data: [sukses, gagal]
+                        }]
+                    </script>
+                @endif
             @endforeach
         @endforeach
     @endforeach
