@@ -104,7 +104,7 @@ class UserController extends Controller
     }
     public function module_add(Request $request, User $user)
     {
-        $ums = UserModule::all();
+        $ums = UserModule::where('user_id', $user->id);
         $bool = true;
         foreach ($ums as $key => $usermodule) {
             if ($usermodule->module_id == $request->module_id) {
