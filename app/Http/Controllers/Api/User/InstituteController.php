@@ -16,7 +16,7 @@ class InstituteController extends Controller
      */
     public function index()
     {
-        $institutes = Institute::all();
+        $institutes = Institute::orderBy('name')->get();
         $return = [
             'api_code' => 200,
             'api_status' => true,

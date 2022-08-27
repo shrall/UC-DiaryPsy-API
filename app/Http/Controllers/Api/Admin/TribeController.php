@@ -16,7 +16,7 @@ class TribeController extends Controller
      */
     public function index()
     {
-        $tribes = Tribe::all();
+        $tribes = Tribe::orderBy('name')->get();
         $return = [
             'api_code' => 200,
             'api_status' => true,
