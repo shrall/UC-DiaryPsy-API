@@ -46,14 +46,16 @@ class UserQuizExportResource extends JsonResource
         foreach ($this->quiz->questions->sortBy('order') as $key => $question) {
             if ($key == 2) {
                 $questions .= $question->question;
-                $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice) . ")";
+                $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice ?? 0) . ")";
             } else {
                 if ($question->questiontype_id == 2) {
-                    $questions .= "\n" . $question->answers->where('user_id', $this->user_id)->first()->open_question;
-                    $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice) . ")";
+                    if ($question->answers->where('user_id', $this->user_id)->first()->open_question) {
+                        $questions .= "\n" . $question->answers->where('user_id', $this->user_id)->first()->open_question;
+                        $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice ?? 0) . ")";
+                    }
                 } else if ($question->questiontype_id == 1) {
                     $questions .= "\n" . $question->question;
-                    $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice) . ")";
+                    $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice ?? 0) . ")";
                 }
             }
             $successes += $question->answers->where('user_id', $this->user_id)->first()->choice;
