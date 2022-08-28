@@ -42,6 +42,7 @@ class UserQuizExportResource extends JsonResource
             "Quiz" => $this->quiz->name,
         ];
         $questions = "";
+        $emptyopenquestion = 0;
         $successes = 0;
         foreach ($this->quiz->questions->sortBy('order') as $key => $question) {
             if ($key == 2) {
@@ -52,6 +53,8 @@ class UserQuizExportResource extends JsonResource
                     if ($question->answers->where('user_id', $this->user_id)->first()->open_question) {
                         $questions .= "\n" . $question->answers->where('user_id', $this->user_id)->first()->open_question;
                         $questions .= " (" . $this->successOrNot($question->answers->where('user_id', $this->user_id)->first()->choice ?? 0) . ")";
+                    } else {
+                        $emptyopenquestion = 1;
                     }
                 } else if ($question->questiontype_id == 1) {
                     $questions .= "\n" . $question->question;
@@ -71,7 +74,7 @@ class UserQuizExportResource extends JsonResource
         }
         $response["Refleksi"] = $refleksi;
         $response["Total Berhasil"] = $successes;
-        $response["Total Gagal"] = $this->quiz->questions->count() - 1 - $successes;
+        $response["Total Gagal"] = $this->quiz->questions->count() - 1 - $successes - $emptyopenquestion;
         $response["Status Quiz"] = $successes >= ($this->quiz->questions->count() - 1 - $successes) ? "Berhasil" : "Gagal";
         $response["Tanggal"] = $this->created_at;
 
