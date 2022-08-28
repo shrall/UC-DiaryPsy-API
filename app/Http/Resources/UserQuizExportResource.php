@@ -79,7 +79,7 @@ class UserQuizExportResource extends JsonResource
         foreach ($this->quiz->character->quizzes as $key => $quiz) {
             $question_successes = 0;
             foreach ($quiz->questions->sortBy('order') as $key => $question) {
-                $question_successes += $question->answers->where('user_id', $this->user_id)->first()->choice;
+                $question_successes += $question->answers->where('user_id', $this->user_id)->first()->choice ?? 0;
             };
             if ($question_successes >= $quiz->questions->count() - 1 - $successes) {
                 $quiz_successes += 1;
