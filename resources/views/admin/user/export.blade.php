@@ -96,14 +96,11 @@
                                             @endphp
                                         @endforeach
                                     </td>
-                                    @php
-                                        $successes = $successes - $emptyopenquestion;
-                                    @endphp
                                     <td class="border border-black">
-                                        {{ $successes >= $the_quiz->quiz->questions->count() - 1 - $successes ? 'Berhasil' : 'Gagal' }}
+                                        {{ $successes - $emptyopenquestion >= $the_quiz->quiz->questions->count() - 1 - $successes - $emptyopenquestion ? 'Berhasil' : 'Gagal' }}
                                     </td>
-                                    <td class="border border-black">{{ $successes }}</td>
-                                    <td class="border border-black">{{ $quiz->questions->count() - 1 - $successes }}
+                                    <td class="border border-black">{{ $successes - $emptyopenquestion }}</td>
+                                    <td class="border border-black">{{ $quiz->questions->count() - 1 - $successes - $emptyopenquestion }}
                                     </td>
                                 </tr>
                             @endif
