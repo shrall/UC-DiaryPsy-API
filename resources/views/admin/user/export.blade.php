@@ -78,7 +78,7 @@
                                                 ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
                                             @else
                                                 @if ($question->questiontype_id == 2)
-                                                    @if ($question->answers->where('user_id', $this->user_id)->first()->open_question)
+                                                    @if ($question->answers->where('user_id', $user->id)->first()->open_question)
                                                         <br>{{ $question->answers->where('user_id', $user->id)->first()->open_question }}
                                                         ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
                                                     @else
