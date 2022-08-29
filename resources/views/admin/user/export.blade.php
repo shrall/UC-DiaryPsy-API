@@ -65,6 +65,7 @@
                             @php
                                 $the_quiz = $user->quizzes->where('quiz_id', $quiz->id)->first();
                                 $successes = 0;
+                                $emptyopenquestion = 0;
                             @endphp
                             @if ($the_quiz)
                                 <tr>
@@ -77,8 +78,14 @@
                                                 ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
                                             @else
                                                 @if ($question->questiontype_id == 2)
-                                                    <br>{{ $question->answers->where('user_id', $user->id)->first()->open_question }}
-                                                    ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
+                                                    @if ($question->answers->where('user_id', $this->user_id)->first()->open_question)
+                                                        <br>{{ $question->answers->where('user_id', $user->id)->first()->open_question }}
+                                                        ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
+                                                    @else
+                                                        @php
+                                                            $emptyopenquestion = 1;
+                                                        @endphp
+                                                    @endif
                                                 @elseif ($question->questiontype_id == 1)
                                                     <br>{{ $question->question }}
                                                     ({{ $question->answers->where('user_id', $user->id)->first()->choice == '0' ? 'Gagal' : 'Berhasil' }})
@@ -89,6 +96,9 @@
                                             @endphp
                                         @endforeach
                                     </td>
+                                    @php
+                                        $successes = $successes - $emptyopenquestion;
+                                    @endphp
                                     <td class="border border-black">
                                         {{ $successes >= $the_quiz->quiz->questions->count() - 1 - $successes ? 'Berhasil' : 'Gagal' }}
                                     </td>
