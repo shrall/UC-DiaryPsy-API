@@ -35,27 +35,38 @@ class QuestionController extends Controller
      */
     public function store(Request $request)
     {
-        $question = Question::create([
-            'question' => $request->question,
-            'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 1,
-            'quiz_id' => $request->quiz_id,
-            'questiontype_id' => $request->questiontype_id
-        ]);
+        if (Question::where('question', $request->question)->exists()) {
+            $question = Question::where('question', $request->question)->first();
+            $return = [
+                'api_code' => 200,
+                'api_status' => true,
+                'api_message' => 'Sukses',
+                'api_results' => $question
+            ];
+            return SuccessResource::make($return);
+        } else {
+            $question = Question::create([
+                'question' => $request->question,
+                'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 1,
+                'quiz_id' => $request->quiz_id,
+                'questiontype_id' => $request->questiontype_id
+            ]);
 
-        Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 2)->first()->update([
-            'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 1,
-        ]);
-        Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 3)->first()->update([
-            'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 2,
-        ]);
+            Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 2)->first()->update([
+                'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 1,
+            ]);
+            Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 3)->first()->update([
+                'order' => Question::where('quiz_id', $request->quiz_id)->where('questiontype_id', 1)->get()->count() + 2,
+            ]);
 
-        $return = [
-            'api_code' => 200,
-            'api_status' => true,
-            'api_message' => 'Sukses',
-            'api_results' => $question
-        ];
-        return SuccessResource::make($return);
+            $return = [
+                'api_code' => 200,
+                'api_status' => true,
+                'api_message' => 'Sukses',
+                'api_results' => $question
+            ];
+            return SuccessResource::make($return);
+        }
     }
 
     /**
