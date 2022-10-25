@@ -7,6 +7,7 @@ use App\Http\Resources\CharacterResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Character;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class CharacterController extends Controller
 {
@@ -17,7 +18,29 @@ class CharacterController extends Controller
      */
     public function index()
     {
-        //
+        $characters = Character::withCount(['quizzes' => function ($query) {
+            $query->whereHas('users', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
+        }, 'quizzes as qu_count'])->whereHas('quizzes', function ($query) {
+            $query->whereHas('users', function ($query) {
+                $query->where('user_id', Auth::id());
+            });
+        })->get();
+
+        foreach ($characters as $key => $character) {
+            if ($character->quizzes_count != $character->qu_count) {
+                $characters->forget($key);
+            }
+        }
+
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $characters
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
