@@ -33,7 +33,6 @@ class CharacterController extends Controller
                 $characters->forget($key);
             }
         }
-        return $characters;
         $return = [
             'api_code' => 200,
             'api_status' => true,
