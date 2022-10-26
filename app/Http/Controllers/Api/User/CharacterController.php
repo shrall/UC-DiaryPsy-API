@@ -28,16 +28,20 @@ class CharacterController extends Controller
             });
         })->get();
 
+        $the_array = array();
+
         foreach ($characters as $key => $character) {
             if ($character->quizzes_count != $character->qu_count) {
                 $characters->forget($key);
+            } else {
+                array_push($the_array, $character);
             }
         }
         $return = [
             'api_code' => 200,
             'api_status' => true,
             'api_message' => 'Sukses',
-            'api_results' => $characters
+            'api_results' => $the_array
         ];
         return SuccessResource::make($return);
     }
