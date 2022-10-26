@@ -19,6 +19,7 @@ class QuizController extends Controller
      */
     public function index()
     {
+
         $quizzes = Quiz::whereHas('users', function ($q) {
             $q->where('user_id', Auth::id());
         })->get();
