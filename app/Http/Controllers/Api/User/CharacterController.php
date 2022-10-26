@@ -33,12 +33,12 @@ class CharacterController extends Controller
                 $characters->forget($key);
             }
         }
-
+        return $characters;
         $return = [
             'api_code' => 200,
             'api_status' => true,
             'api_message' => 'Sukses',
-            'api_results' => json_encode(array_values(array($characters)))
+            'api_results' => $characters
         ];
         return SuccessResource::make($return);
     }
