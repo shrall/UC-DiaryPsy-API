@@ -8,6 +8,7 @@ use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserQuizResource;
 use App\Models\Quiz;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
 
 class QuizController extends Controller
 {
@@ -18,7 +19,18 @@ class QuizController extends Controller
      */
     public function index()
     {
-        //
+
+        $quizzes = Quiz::whereHas('users', function ($q) {
+            $q->where('user_id', Auth::id());
+        })->get();
+
+        $return = [
+            'api_code' => 200,
+            'api_status' => true,
+            'api_message' => 'Sukses',
+            'api_results' => $quizzes
+        ];
+        return SuccessResource::make($return);
     }
 
     /**
