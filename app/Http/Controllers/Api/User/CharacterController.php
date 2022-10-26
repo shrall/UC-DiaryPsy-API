@@ -38,7 +38,7 @@ class CharacterController extends Controller
             'api_code' => 200,
             'api_status' => true,
             'api_message' => 'Sukses',
-            'api_results' => json_encode(array_values($characters))
+            'api_results' => json_encode(array_values(array($characters)))
         ];
         return SuccessResource::make($return);
     }
