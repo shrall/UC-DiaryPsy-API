@@ -26,8 +26,11 @@ class QuizController extends Controller
         })->get();
         $completed_at = Carbon::now();
         foreach ($quizzes as $key => $quiz) {
-            $completed_at = $quiz
-                ->users[0]->created_at;
+            foreach ($quiz->users as $key => $userQuiz) {
+                if ($userQuiz->user_id == Auth::id()) {
+                    $completed_at = $userQuiz->created_at;
+                }
+            }
             $quiz->completed_at = $completed_at;
         }
         $return = [
