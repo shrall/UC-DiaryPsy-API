@@ -7,6 +7,7 @@ use App\Http\Resources\QuizUserResource;
 use App\Http\Resources\SuccessResource;
 use App\Http\Resources\UserQuizResource;
 use App\Models\Quiz;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -23,7 +24,12 @@ class QuizController extends Controller
         $quizzes = Quiz::whereHas('users', function ($q) {
             $q->where('user_id', Auth::id());
         })->get();
-
+        $completed_at = Carbon::now();
+        foreach ($quizzes as $key => $quiz) {
+            $completed_at = $quiz
+                ->users[0]->created_at;
+            $quiz->completed_at = $completed_at;
+        }
         $return = [
             'api_code' => 200,
             'api_status' => true,
