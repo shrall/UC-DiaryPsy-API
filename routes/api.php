@@ -35,6 +35,7 @@ use App\Http\Controllers\CharacterController;
 use App\Http\Controllers\EducationController;
 use App\Http\Controllers\InstituteController;
 use App\Http\Controllers\ModuleController;
+use App\Http\Controllers\ProjectEnvironmentController;
 use App\Http\Controllers\QuestionController;
 use App\Http\Controllers\QuestionTypeController;
 use App\Http\Controllers\QuizController;
@@ -63,6 +64,7 @@ Route::post('/login', [LoginController::class, 'login']);
 Route::post('/forgot-password', [LoginController::class, 'forgot_password']);
 Route::post('/register', [RegisterController::class, 'register']);
 Route::post('/email/verify', [RegisterController::class, 'resend_email']);
+Route::get('/env', [ProjectEnvironmentController::class, 'index']);
 
 Route::group(['middleware' => 'auth:api', 'as' => 'api.user.'], function () {
     Route::post('/logout', [LoginController::class, 'logout']);
@@ -135,4 +137,5 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'user'], function () {
 Route::group(['middleware' => 'auth:api'], function () {
     Route::apiResource('user', UserUserController::class);
     Route::post('/user/{user}/module/add', [UserUserController::class, 'module_add']);
+    Route::get('/village', [LocationController::class, 'village']);
 });
