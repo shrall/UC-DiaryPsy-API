@@ -32,10 +32,24 @@ class CharacterController extends Controller
 
         foreach ($characters as $key => $character) {
             if ($character->quizzes_count != $character->qu_count) {
-                $characters->forget($key);
+                $character->complete = 0;
             } else {
-                array_push($the_array, $character);
+                $character->complete = 1;
             }
+            $quizzes = $character->quizzes()
+                ->whereHas('users', function ($query) {
+                    $query->where('user_id', Auth::id());
+                })->get();
+            $quizes = $character->quizzes;
+            foreach ($quizes as $key => $quiz) {
+                if ($quizzes->contains('id', $quiz->id)) {
+                    $quiz->complete = 1;
+                } else {
+                    $quiz->complete = 0;
+                }
+            }
+            $character->quizzes = $quizes;
+            array_push($the_array, $character);
         }
         $return = [
             'api_code' => 200,
