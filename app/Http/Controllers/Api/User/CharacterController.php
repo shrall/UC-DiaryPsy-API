@@ -6,6 +6,7 @@ use App\Http\Controllers\Controller;
 use App\Http\Resources\CharacterResource;
 use App\Http\Resources\SuccessResource;
 use App\Models\Character;
+use Carbon\Carbon;
 use Illuminate\Http\Request;
 use Illuminate\Support\Facades\Auth;
 
@@ -22,11 +23,7 @@ class CharacterController extends Controller
             $query->whereHas('users', function ($query) {
                 $query->where('user_id', Auth::id());
             });
-        }, 'quizzes as qu_count'])->whereHas('quizzes', function ($query) {
-            $query->whereHas('users', function ($query) {
-                $query->where('user_id', Auth::id());
-            });
-        })->get();
+        }, 'quizzes as qu_count'])->get();
 
         $the_array = array();
 
@@ -41,12 +38,19 @@ class CharacterController extends Controller
                     $query->where('user_id', Auth::id());
                 })->get();
             $quizes = $character->quizzes;
+            $completed_at = Carbon::now();
             foreach ($quizes as $key => $quiz) {
                 if ($quizzes->contains('id', $quiz->id)) {
                     $quiz->complete = 1;
                 } else {
                     $quiz->complete = 0;
                 }
+                foreach ($quiz->users as $key => $userQuiz) {
+                    if ($userQuiz->user_id == Auth::id()) {
+                        $completed_at = $userQuiz->created_at;
+                    }
+                }
+                $quiz->completed_at = $completed_at;
             }
             $character->quizzes = $quizes;
             array_push($the_array, $character);
