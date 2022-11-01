@@ -39,6 +39,8 @@ class CharacterController extends Controller
             'name' => $request->name,
             'status' => $request->status,
             'order' => Character::where('module_id', $request->module_id)->get()->count() + 1,
+            'verse' => $request->verse,
+            'verse_number' => $request->verse_number,
             'module_id' => $request->module_id
         ]);
         $return = [
@@ -79,6 +81,8 @@ class CharacterController extends Controller
         $character->update([
             'name' => $request->name,
             'status' => $request->status,
+            'verse' => $request->verse,
+            'verse_number' => $request->verse_number,
         ]);
         $return = [
             'api_code' => 200,

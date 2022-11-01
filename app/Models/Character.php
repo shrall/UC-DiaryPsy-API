@@ -13,6 +13,8 @@ class Character extends Model
         'status',
         'order',
         'path',
+        'verse',
+        'verse_number',
         'module_id'
     ];
 

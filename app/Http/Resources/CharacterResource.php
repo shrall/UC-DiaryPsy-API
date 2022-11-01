@@ -20,6 +20,8 @@ class CharacterResource extends JsonResource
             "status" => $this->status,
             "order" => $this->order,
             "path" => $this->path,
+            'verse' => $this->verse,
+            'verse_number' => $this->verse_number,
             "quizzes" => $this->quizzes
         ];
         return parent::toArray($request);
