@@ -2,8 +2,11 @@
 
 namespace App\Http\Controllers;
 
+use App\Http\Resources\SuccessResource;
 use App\Models\User;
 use Illuminate\Http\Request;
+use Illuminate\Support\Facades\Auth;
+use Illuminate\Support\Facades\Hash;
 
 class UserController extends Controller
 {
@@ -83,5 +86,32 @@ class UserController extends Controller
     public function destroy($id)
     {
         //
+    }
+    public function update_password(Request $request)
+    {
+        $data = $request->validate([
+            'current_password' => ['required', 'min:8'],
+            'new_password' => ['required', 'confirmed', 'min:8'],
+        ]);
+        $user = User::find(Auth::id());
+        if (Hash::check($data['current_password'], $user->password)) {
+            $user->update([
+                'password' => Hash::make($data['new_password']),
+            ]);
+            $return = [
+                'api_code' => 200,
+                'api_status' => true,
+                'api_message' => 'Password berhasil diperbarui!',
+                'api_results' => $user
+            ];
+            return SuccessResource::make($return);
+        }
+        $return = [
+            'api_code' => 403,
+            'api_status' => false,
+            'api_message' => 'Password salah.',
+            'api_results' => $user
+        ];
+        return SuccessResource::make($return);
     }
 }

@@ -70,21 +70,6 @@ Route::group(['middleware' => 'auth:api', 'as' => 'api.user.'], function () {
     Route::post('/logout', [LoginController::class, 'logout']);
 });
 
-// Route::apiResource('character', CharacterController::class);
-// Route::apiResource('institute', InstituteController::class);
-// Route::apiResource('module', ModuleController::class);
-// Route::apiResource('question', QuestionController::class);
-// Route::apiResource('questiontype', QuestionTypeController::class);
-// Route::apiResource('quiz', QuizController::class);
-// Route::apiResource('religion', ReligionController::class);
-// Route::apiResource('role', RoleController::class);
-// Route::apiResource('tribe', TribeController::class);
-// Route::apiResource('user', UserController::class);
-// Route::apiResource('usermodule', UserModuleController::class);
-// Route::apiResource('userquestion', UserQuestionController::class);
-// Route::apiResource('userquiz', UserQuizController::class);
-// Route::apiResource('education', EducationController::class);
-
 Route::group(['middleware' => 'auth:api', 'prefix' => 'admin'], function () {
     Route::apiResource('character', AdminCharacterController::class);
     Route::apiResource('institute', AdminInstituteController::class);
@@ -135,6 +120,7 @@ Route::group(['middleware' => 'auth:api', 'prefix' => 'user'], function () {
     Route::apiResource('userquiz', UserUserQuizController::class);
 });
 Route::group(['middleware' => 'auth:api'], function () {
+    Route::post('/update-password', [UserController::class, 'update_password'])->name('update_password');
     Route::apiResource('user', UserUserController::class);
     Route::post('/user/{user}/module/add', [UserUserController::class, 'module_add']);
     Route::get('/village', [LocationController::class, 'village']);
